@@ -56,6 +56,8 @@ public abstract class AbstractSerialThread
     // When the queue is full, prefer dropping the message in the queue instead of the new message
     private bool dropOldMessage;
 
+    private bool ignoreDroppedMessages;
+
     private bool dtrEnable = false;
     private bool rtsEnable = false;
 
@@ -74,6 +76,7 @@ public abstract class AbstractSerialThread
                                 int maxUnreadMessages,
                                 bool enqueueStatusMessages,
                                 bool dropOldMessage,
+                                bool ignoreDroppedMessages,
                                 bool dtrEnable,
                                 bool rtsEnable)
     {
@@ -83,6 +86,7 @@ public abstract class AbstractSerialThread
         this.maxUnreadMessages = maxUnreadMessages;
         this.enqueueStatusMessages = enqueueStatusMessages;
         this.dropOldMessage = dropOldMessage;
+        this.ignoreDroppedMessages = ignoreDroppedMessages;
         this.dtrEnable = dtrEnable;
         this.rtsEnable = rtsEnable;
 
@@ -99,6 +103,12 @@ public abstract class AbstractSerialThread
         {
             stopRequested = true;
         }
+    }
+
+    public void ClearQueue()
+    {
+        inputQueue = new Queue();
+        outputQueue = new Queue();
     }
 
     // ------------------------------------------------------------------------
@@ -291,7 +301,7 @@ public abstract class AbstractSerialThread
                     {
                         droppedMessage = inputMessage;
                     }
-                    Debug.LogWarning("Queue is full. Dropping message: " + droppedMessage);
+                    if (!ignoreDroppedMessages) Debug.LogWarning("Queue is full. Dropping message: " + droppedMessage);
                 }
             }
         }
