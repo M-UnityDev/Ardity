@@ -48,7 +48,7 @@ public class SerialController : MonoBehaviour
              "newest messages from the port.")]
     public bool dropOldMessage;
 
-    public bool ignoreDroppedMessages;
+    public bool logDroppedMessages = true;
 
     [Tooltip("Read all unread messages in the queue during every Update loop. " +
              "Only used when \"Message Listener\" is provided.")]
@@ -82,7 +82,7 @@ public class SerialController : MonoBehaviour
                                              reconnectionDelay,
                                              maxUnreadMessages,
                                              dropOldMessage,
-                                             ignoreDroppedMessages,
+                                             logDroppedMessages,
                                              dtrEnable,
                                              rtsEnable);
         thread = new Thread(new ThreadStart(serialThread.RunForever));

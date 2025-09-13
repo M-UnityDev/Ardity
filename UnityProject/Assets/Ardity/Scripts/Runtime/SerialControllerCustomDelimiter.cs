@@ -40,7 +40,7 @@ public class SerialControllerCustomDelimiter : MonoBehaviour
              "newest messages from the port.")]
     public bool dropOldMessage;
 
-    public bool ignoreDroppedMessages;
+    public bool logDroppedMessages = true;
 
     [Tooltip("ASCII value of the character to use as separator. It marks the end of a " +
              "message and the beginning of the next.")]
@@ -67,7 +67,7 @@ public class SerialControllerCustomDelimiter : MonoBehaviour
                                                        maxUnreadMessages,
                                                        separator,
                                                        dropOldMessage,
-                                                       ignoreDroppedMessages,
+                                                       logDroppedMessages,
                                                        dtrEnable,
                                                        rtsEnable);
         thread = new Thread(new ThreadStart(serialThread.RunForever));
